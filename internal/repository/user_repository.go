@@ -6,7 +6,7 @@ import (
 )
 
 type UserRepository interface {
-    GetByID(id uint) (*domain.User, error)
+    GetByID(id string) (*domain.User, error)  
     Create(user *domain.User) error
 }
 
@@ -18,9 +18,9 @@ func NewUserRepository(db *gorm.DB) UserRepository {
     return &userRepository{db: db}
 }
 
-func (r *userRepository) GetByID(id uint) (*domain.User, error) {
+func (r *userRepository) GetByID(id string) (*domain.User, error) {
     var user domain.User
-    if err := r.db.First(&user, id).Error; err != nil {
+    if err := r.db.First(&user, "id = ?", id).Error; err != nil {
         return nil, err
     }
     return &user, nil
