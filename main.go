@@ -8,17 +8,29 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"strconv"
+	"os"                     
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	app := fiber.New()
 
-	dsn := "host=localhost user=your_user password=your_password dbname=your_db port=5432 sslmode=disable"
+	err := godotenv.Load()
+    if err != nil {
+        log.Fatalf("Error loading .env file")
+    }
+
+	dsn := "host=" + os.Getenv("POSTGRES_HOST") +
+		" user=" + os.Getenv("POSTGRES_USER") +
+		" password=" + os.Getenv("POSTGRES_PASSWORD") +
+		" dbname=" + os.Getenv("POSTGRES_DB_NAME") +
+		" port=" + os.Getenv("POSTGRES_PORT") +
+		" sslmode=disable"
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-	}
+    if err != nil {
+        log.Fatalf("Failed to connect to database: %v", err)
+    }
 
 	consultationRepo := repository.NewConsultationRepository()
 	getConsultationListUC := usecase.NewGetConsultationListUseCase(consultationRepo)
@@ -30,18 +42,13 @@ func main() {
 	app.Get("/consultations", consultationHandler.GetConsultationList)
 
 	app.Get("/users/:id", func(c *fiber.Ctx) error {
-		idParam := c.Params("id")  
-
-		id, err := strconv.ParseUint(idParam, 10, 32)  
-		if err != nil {
-			return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID"})
-		}
-
-		user, err := userUsecase.GetUser(int(id))  
+		id := c.Params("id")  
+	
+		user, err := userUsecase.GetUser(id)  
 		if err != nil {
 			return c.Status(404).JSON(fiber.Map{"error": "User not found"})
 		}
-
+	
 		return c.JSON(user)   
 	})
 
