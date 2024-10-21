@@ -8,6 +8,9 @@ type IConsultationRepository interface {
 	FindByQuery(limit, offset int, startDate, endDate, clinicId, timePeriod string, totalDurationMin, totalDurationMax int, patientName, patientId, doctorId string) ([]domain.Consultation, int, error)
 }
 
+type ConsultationRepository struct {
+}
+
 func NewConsultationRepository() *ConsultationRepository {
 	return &ConsultationRepository{}
 }
