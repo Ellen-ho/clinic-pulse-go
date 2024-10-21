@@ -10,6 +10,9 @@ type UserRepository interface {
     Create(user *domain.User) error
 }
 
+type userRepository struct {
+}
+
 func NewUserRepository() UserRepository {
     return &userRepository{}
 }
