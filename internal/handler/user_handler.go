@@ -15,12 +15,14 @@ func NewUserHandler(usecase usecase.UserUsecase) *UserHandler {
 }
 
 func (h *UserHandler) GetUser(c *fiber.Ctx) error {
-    id, _ := c.ParamsInt("id")
+    id := c.Params("id") 
+
     user, err := h.usecase.GetUser(id)
     if err != nil {
-        return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
+        return c.Status(404).JSON(fiber.Map{"error": "User not found"})
     }
-    return c.JSON(user)
+
+    return c.JSON(user)  
 }
 
 func (h *UserHandler) CreateUser(c *fiber.Ctx) error {
