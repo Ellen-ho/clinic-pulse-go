@@ -1,6 +1,6 @@
 package repository
 
-import "my-go-backend/internal/domain"
+import "clinic-pulse-go/internal/domain"
 
 type DoctorRepository struct {
 }

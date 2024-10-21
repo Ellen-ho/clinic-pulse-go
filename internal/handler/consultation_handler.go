@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"my-go-backend/internal/usecase"
+	"clinic-pulse-go/internal/usecase"
 	"github.com/gofiber/fiber/v2"
 )
 

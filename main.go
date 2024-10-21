@@ -1,9 +1,9 @@
 package main
 
 import (
-	"my-go-backend/internal/handler"
-	"my-go-backend/internal/repository"
-	"my-go-backend/internal/usecase"
+	"clinic-pulse-go/internal/handler"
+	"clinic-pulse-go/internal/repository"
+	"clinic-pulse-go/internal/usecase"
     "github.com/gofiber/fiber/v2"
 )
 

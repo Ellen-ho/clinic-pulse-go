@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"my-go-backend/internal/domain"
-	"my-go-backend/internal/repository"
+	"clinic-pulse-go/internal/domain"
+	"clinic-pulse-go/internal/repository"
 )
 
 type GetConsultationListRequest struct {

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"my-go-backend/internal/domain"
+	"clinic-pulse-go/internal/domain"
 	"strconv"
 )
 
