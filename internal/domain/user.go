@@ -1,10 +1,10 @@
 package domain
 
-import "gorm.io/gorm"
+import "time"  
 
 type User struct {
-    gorm.Model
-    FirstName string `gorm:"size:255"`
-    LastName  string `gorm:"size:255"`
-    Email     string `gorm:"uniqueIndex;size:255"`
+    ID        string    `gorm:"primary_key"`
+    Email     string
+    CreatedAt time.Time  
+    UpdatedAt time.Time  
 }
