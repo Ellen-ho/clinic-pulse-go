@@ -1,18 +1,20 @@
 package main
 
 import (
+	"my-go-backend/internal/handler"
+	"my-go-backend/internal/repository"
+	"my-go-backend/internal/usecase"
     "github.com/gofiber/fiber/v2"
 )
 
 func main() {
     app := fiber.New()
 
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.SendString("Clinic Pulse!")
-    })
+	consultationRepo := repository.NewConsultationRepository()
+	getConsultationListUC := usecase.NewGetConsultationListUseCase(consultationRepo)
+	consultationHandler := handler.NewConsultationHandler(getConsultationListUC)
 
-    err := app.Listen(":3000")
-    if err != nil {
-        panic(err)
-    }
+    app.Get("/consultations", consultationHandler.GetConsultationList)
+
+	app.Listen(":3000")
 }
