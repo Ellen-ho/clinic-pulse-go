@@ -6,7 +6,7 @@ import (
 )
 
 type UserUsecase interface {
-    GetUser(id int) (*domain.User, error)
+    GetUser(id int) (*domain.User, error) 
     CreateUser(user *domain.User) error
 }
 
@@ -19,7 +19,7 @@ func NewUserUsecase(repo repository.UserRepository) UserUsecase {
 }
 
 func (u *userUsecase) GetUser(id int) (*domain.User, error) {
-    return u.repo.GetByID(id)
+    return u.repo.GetByID(uint(id))  
 }
 
 func (u *userUsecase) CreateUser(user *domain.User) error {
