@@ -1,8 +1,7 @@
-package mapper
+package doctor
 
 import (
-	"clinic-pulse-go/domain"
-	"clinic-pulse-go/entity"
+	"clinic-pulse-go/internal/domain"
 )
 
 type DoctorMapper struct{}

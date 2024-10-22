@@ -1,13 +1,12 @@
-package mapper
+package patient
 
 import (
-	"clinic-pulse-go/domain"
-	"clinic-pulse-go/entity"
+	"clinic-pulse-go/internal/domain"
 )
 
 type PatientMapper struct{}
 
-func (m *PatientMapper) ToDomainModel(e *entity.PatientEntity) *domain.Patient {
+func (m *PatientMapper) ToDomainModel(e *patient.PatientEntity) *domain.Patient {
 	return &domain.Patient{
 		Props: domain.IPatientProps{
 			ID:        e.ID,
@@ -22,8 +21,8 @@ func (m *PatientMapper) ToDomainModel(e *entity.PatientEntity) *domain.Patient {
 	}
 }
 
-func (m *PatientMapper) ToEntity(d *domain.Patient) *entity.PatientEntity {
-	return &entity.PatientEntity{
+func (m *PatientMapper) ToEntity(d *domain.Patient) *patient.PatientEntity {
+	return &patient.PatientEntity{
 		ID:        d.GetID(),
 		FirstName: d.GetFirstName(),
 		LastName:  d.GetLastName(),

@@ -1,13 +1,12 @@
-package mapper
+package timeSlot
 
 import (
-	"clinic-pulse-go/domain"
-	"clinic-pulse-go/entity"
+	"clinic-pulse-go/internal/domain"
 )
 
 type TimeSlotMapper struct{}
 
-func (m *TimeSlotMapper) ToDomainModel(e *entity.TimeSlotEntity) *domain.TimeSlot {
+func (m *TimeSlotMapper) ToDomainModel(e *timeSlot.TimeSlotEntity) *domain.TimeSlot {
 	return &domain.TimeSlot{
 		Props: domain.ITimeSlotProps{
 			ID:                 e.ID,
@@ -23,8 +22,8 @@ func (m *TimeSlotMapper) ToDomainModel(e *entity.TimeSlotEntity) *domain.TimeSlo
 	}
 }
 
-func (m *TimeSlotMapper) ToEntity(d *domain.TimeSlot) *entity.TimeSlotEntity {
-	return &entity.TimeSlotEntity{
+func (m *TimeSlotMapper) ToEntity(d *domain.TimeSlot) *timeSlot.TimeSlotEntity {
+	return &timeSlot.TimeSlotEntity{
 		ID:                 d.GetID(),
 		StartAt:            d.GetStartAt(),
 		EndAt:              d.GetEndAt(),
