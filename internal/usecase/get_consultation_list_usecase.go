@@ -1,15 +1,15 @@
 package usecase
 
 import (
-	"clinic-pulse-go/internal/domain"
-	"clinic-pulse-go/internal/repository"
+	"clinic-pulse-go/internal/domain/consultation/interfaces/repositories"
+	"clinic-pulse-go/internal/shared"
 )
 
 type GetConsultationListRequest struct {
 	StartDate        string
 	EndDate          string
 	ClinicId         *string
-	TimePeriod       *domain.TimePeriodType
+	TimePeriod       *shared.TimePeriodType
 	TotalDurationMin *int
 	TotalDurationMax *int
 	PatientName      *string
@@ -20,7 +20,7 @@ type GetConsultationListRequest struct {
 }
 
 type GetConsultationListResponse struct {
-	Data []domain.Consultation
+	Data []shared.ConsultationDetail
 	Pagination struct {
 		Pages       []int
 		TotalPage   int
@@ -32,72 +32,51 @@ type GetConsultationListResponse struct {
 }
 
 type GetConsultationListUseCase struct {
-	consultationRepo repository.IConsultationRepository
+	consultationRepo repositories.IConsultationRepository
 }
 
-func NewGetConsultationListUseCase(cr repository.IConsultationRepository) *GetConsultationListUseCase {
+func NewGetConsultationListUseCase(cr repositories.IConsultationRepository) *GetConsultationListUseCase {
 	return &GetConsultationListUseCase{consultationRepo: cr}
 }
 
 func (uc *GetConsultationListUseCase) Execute(request GetConsultationListRequest) (*GetConsultationListResponse, error) {
-	offset := (request.Page - 1) * request.Limit
+    offset := (request.Page - 1) * request.Limit
 
-	timePeriod := ""
-	if request.TimePeriod != nil {
-		timePeriod = string(*request.TimePeriod) 
-	}
+    clinicId := request.ClinicId
 
-	clinicId := ""
-	if request.ClinicId != nil {
-		clinicId = *request.ClinicId
-	}
+    timePeriod := ""
+    if request.TimePeriod != nil {
+        timePeriod = string(*request.TimePeriod) 
+    }
 
-	totalDurationMin := 0
-	if request.TotalDurationMin != nil {
-		totalDurationMin = *request.TotalDurationMin
-	}
+    totalDurationMin := request.TotalDurationMin
+    totalDurationMax := request.TotalDurationMax
 
-	totalDurationMax := 0
-	if request.TotalDurationMax != nil {
-		totalDurationMax = *request.TotalDurationMax
-	}
+    patientName := request.PatientName
+    patientId := request.PatientId
+    doctorId := request.DoctorId
 
-	patientName := ""
-	if request.PatientName != nil {
-		patientName = *request.PatientName
-	}
+    result, err := uc.consultationRepo.FindByQuery(
+        request.Limit, offset, request.StartDate, request.EndDate,
+        clinicId, &timePeriod, totalDurationMin, totalDurationMax,
+        patientName, patientId, doctorId,
+    )
 
-	patientId := ""
-	if request.PatientId != nil {
-		patientId = *request.PatientId
-	}
+    if err != nil {
+        return nil, err
+    }
 
-	doctorId := ""
-	if request.DoctorId != nil {
-		doctorId = *request.DoctorId
-	}
+    response := &GetConsultationListResponse{
+        Data:        result.Consultations,
+        TotalCounts: result.TotalCount,
+        Pagination: struct {
+            Pages       []int
+            TotalPage   int
+            CurrentPage int
+            Prev        int
+            Next        int
+        }{},
+    }
 
-	consultations, totalCounts, err := uc.consultationRepo.FindByQuery(
-		request.Limit, offset, request.StartDate, request.EndDate, clinicId,
-		timePeriod, totalDurationMin, totalDurationMax,
-		patientName, patientId, doctorId,
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetConsultationListResponse{
-		Data: consultations,
-		TotalCounts: totalCounts,
-		Pagination: struct {
-			Pages       []int
-			TotalPage   int
-			CurrentPage int
-			Prev        int
-			Next        int
-		}{}, 
-	}
-
-	return response, nil
+    return response, nil
 }
