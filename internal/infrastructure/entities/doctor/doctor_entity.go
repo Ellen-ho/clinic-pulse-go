@@ -1,16 +1,9 @@
-package entity
+package doctor
 
 import (
 	"time"
 	"gorm.io/gorm"
-)
-
-type GenderType string
-
-const (
-	Male      GenderType = "MALE"
-	Female    GenderType = "FEMALE"
-	NonBinary GenderType = "NON_BINARY"
+	"clinic-pulse-go/internal/shared"
 )
 
 type DoctorEntity struct {
