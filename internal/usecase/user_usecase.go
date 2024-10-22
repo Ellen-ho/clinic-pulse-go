@@ -2,7 +2,7 @@ package usecase
 
 import (
     "clinic-pulse-go/internal/domain"
-    "clinic-pulse-go/internal/repository"
+    "clinic-pulse-go/internal/infrastructure/repository" 
 )
 
 type UserUsecase interface {
@@ -11,7 +11,7 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-    repo repository.UserRepository
+    repo repository.UserRepository  
 }
 
 func NewUserUsecase(repo repository.UserRepository) UserUsecase {
