@@ -2,13 +2,13 @@ package main
 
 import (
 	"clinic-pulse-go/internal/handler"
-	"clinic-pulse-go/internal/repository"
 	"clinic-pulse-go/internal/usecase"
+	"clinic-pulse-go/internal/infrastructure/repository"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"os"                     
+	"os"
 	"github.com/joho/godotenv"
 )
 
@@ -16,9 +16,9 @@ func main() {
 	app := fiber.New()
 
 	err := godotenv.Load()
-    if err != nil {
-        log.Fatalf("Error loading .env file")
-    }
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
 
 	dsn := "host=" + os.Getenv("POSTGRES_HOST") +
 		" user=" + os.Getenv("POSTGRES_USER") +
@@ -28,11 +28,11 @@ func main() {
 		" sslmode=disable"
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-    if err != nil {
-        log.Fatalf("Failed to connect to database: %v", err)
-    }
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
 
-	consultationRepo := repository.NewConsultationRepository()
+	consultationRepo := repository.NewConsultationRepository(db)
 	getConsultationListUC := usecase.NewGetConsultationListUseCase(consultationRepo)
 	consultationHandler := handler.NewConsultationHandler(getConsultationListUC)
 
@@ -42,14 +42,12 @@ func main() {
 	app.Get("/consultations", consultationHandler.GetConsultationList)
 
 	app.Get("/users/:id", func(c *fiber.Ctx) error {
-		id := c.Params("id")  
-	
-		user, err := userUsecase.GetUser(id)  
+		id := c.Params("id")
+		user, err := userUsecase.GetUser(id)
 		if err != nil {
 			return c.Status(404).JSON(fiber.Map{"error": "User not found"})
 		}
-	
-		return c.JSON(user)   
+		return c.JSON(user)
 	})
 
 	app.Listen(":3000")
