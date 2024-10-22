@@ -2,14 +2,14 @@ package domain
 
 import (
 	"time"
-	"clinic-pulse-go/entity"
+	"clinic-pulse-go/internal/shared"
 )
 
 type ITimeSlotProps struct {
 	ID                 string
 	StartAt            time.Time
 	EndAt              time.Time
-	TimePeriod         entity.TimePeriodType
+	TimePeriod         shared.TimePeriodType  
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 	DoctorID           string
@@ -33,7 +33,7 @@ func (t *TimeSlot) GetEndAt() time.Time {
 	return t.Props.EndAt
 }
 
-func (t *TimeSlot) GetTimePeriod() entity.TimePeriodType {
+func (t *TimeSlot) GetTimePeriod() shared.TimePeriodType {   
 	return t.Props.TimePeriod
 }
 

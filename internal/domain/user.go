@@ -2,46 +2,42 @@ package domain
 
 import (
 	"time"
-	"your_project/entity"
+	"clinic-pulse-go/internal/shared"
 )
 
-type IUserProps struct {
-	ID             string
-	Email          string
-	HashedPassword string
-	Role           entity.UserRoleType
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-}
-
 type User struct {
-	Props IUserProps
+    ID             string              `gorm:"type:uuid;primaryKey" json:"id"`
+    Email          string              `gorm:"type:varchar(100);not null" json:"email"`
+    HashedPassword string              `gorm:"type:varchar(255);not null" json:"-"`
+    Role           shared.UserRoleType `gorm:"type:varchar(50);not null" json:"role"`
+    CreatedAt      time.Time           `gorm:"autoCreateTime" json:"created_at"`
+    UpdatedAt      time.Time           `gorm:"autoUpdateTime" json:"updated_at"`
 }
 
 func (u *User) GetID() string {
-	return u.Props.ID
+	return u.ID
 }
 
 func (u *User) GetEmail() string {
-	return u.Props.Email
+	return u.Email
 }
 
 func (u *User) GetHashedPassword() string {
-	return u.Props.HashedPassword
+	return u.HashedPassword
 }
 
-func (u *User) GetRole() entity.UserRoleType {
-	return u.Props.Role
+func (u *User) GetRole() shared.UserRoleType {
+	return u.Role
 }
 
 func (u *User) GetCreatedAt() time.Time {
-	return u.Props.CreatedAt
+	return u.CreatedAt
 }
 
 func (u *User) GetUpdatedAt() time.Time {
-	return u.Props.UpdatedAt
+	return u.UpdatedAt
 }
 
 func (u *User) UpdatePassword(newPassword string) {
-	u.Props.HashedPassword = newPassword
+	u.HashedPassword = newPassword
 }

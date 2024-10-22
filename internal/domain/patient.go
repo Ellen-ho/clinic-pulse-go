@@ -2,14 +2,7 @@ package domain
 
 import (
 	"time"
-)
-
-type GenderType string
-
-const (
-	Male      GenderType = "MALE"
-	Female    GenderType = "FEMALE"
-	NonBinary GenderType = "NON_BINARY"
+	"clinic-pulse-go/internal/shared"
 )
 
 type IPatientProps struct {
@@ -18,7 +11,7 @@ type IPatientProps struct {
 	LastName  string
 	FullName  string
 	BirthDate time.Time
-	Gender    GenderType
+	Gender    shared.GenderType 
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -47,7 +40,7 @@ func (p *Patient) GetBirthDate() time.Time {
 	return p.Props.BirthDate
 }
 
-func (p *Patient) GetGender() GenderType {
+func (p *Patient) GetGender() shared.GenderType { 
 	return p.Props.Gender
 }
 
@@ -63,7 +56,7 @@ type IPatientProfileUpdateData struct {
 	FirstName string
 	LastName  string
 	BirthDate time.Time
-	Gender    GenderType
+	Gender    shared.GenderType 
 }
 
 func (p *Patient) UpdateData(data IPatientProfileUpdateData) {

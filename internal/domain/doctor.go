@@ -2,19 +2,19 @@ package domain
 
 import (
 	"time"
-	"clinic-pulse-go/entity"
+	"clinic-pulse-go/internal/shared"
 )
 
 type IDoctorProps struct {
-	ID             string
-	Avatar         *string
-	FirstName      string
-	LastName       string
-	Gender         entity.GenderType
-	BirthDate      time.Time
-	OnboardDate    time.Time
+	ID              string
+	Avatar          *string
+	FirstName       string
+	LastName        string
+	Gender          shared.GenderType  
+	BirthDate       time.Time
+	OnboardDate     time.Time
 	ResignationDate *time.Time
-	User           *entity.UserEntity
+	User            *shared.User      
 }
 
 type Doctor struct {
@@ -37,7 +37,7 @@ func (d *Doctor) GetLastName() string {
 	return d.Props.LastName
 }
 
-func (d *Doctor) GetGender() entity.GenderType {
+func (d *Doctor) GetGender() shared.GenderType {  
 	return d.Props.Gender
 }
 
@@ -53,7 +53,7 @@ func (d *Doctor) GetResignationDate() *time.Time {
 	return d.Props.ResignationDate
 }
 
-func (d *Doctor) GetUser() *entity.UserEntity {
+func (d *Doctor) GetUser() *shared.User {  
 	return d.Props.User
 }
 
