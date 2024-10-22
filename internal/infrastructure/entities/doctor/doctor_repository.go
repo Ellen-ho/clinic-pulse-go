@@ -1,4 +1,4 @@
-package repository
+package doctor
 
 import "clinic-pulse-go/internal/domain"
 
